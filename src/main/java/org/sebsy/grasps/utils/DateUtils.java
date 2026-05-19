@@ -3,15 +3,14 @@ package org.sebsy.grasps.utils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Pure Fabrication : classe artificielle pour extraire la responsabilité
- * de conversion de date hors du controller (haute cohésion).
- */
-public class DateConverter {
+public final class DateUtils {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-    public LocalDateTime toLocalDateTime(String dateStr) {
+    private DateUtils() {
+    }
+
+    public static LocalDateTime toDate(String dateStr) {
         return LocalDateTime.parse(dateStr, FORMATTER);
     }
 }

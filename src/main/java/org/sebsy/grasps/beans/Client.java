@@ -3,6 +3,7 @@ package org.sebsy.grasps.beans;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,14 +64,16 @@ public class Client {
         this.premium = premium;
     }
 
-    /**
-     * Information Expert : le Client gère lui-même sa liste de réservations.
-     * Évite de violer la Loi de Déméter (Law of Demeter).
-     *
-     * @param reservation la réservation à ajouter
-     */
-    public void addReservation(Reservation reservation) {
+    private void addReservation(Reservation reservation) {
+        reservation.setClient(this);
         this.reservations.add(reservation);
+    }
+
+    public Reservation creerReservation(LocalDateTime date, int nbPlaces, TypeReservation type) {
+        Reservation reservation = new Reservation(date, nbPlaces);
+        this.addReservation(reservation);
+        reservation.calculerTotal(type);
+        return reservation;
     }
 
     /**
