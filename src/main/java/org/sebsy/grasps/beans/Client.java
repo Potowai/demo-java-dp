@@ -64,6 +64,16 @@ public class Client {
     }
 
     /**
+     * Information Expert : le Client gère lui-même sa liste de réservations.
+     * Évite de violer la Loi de Déméter (Law of Demeter).
+     *
+     * @param reservation la réservation à ajouter
+     */
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+    }
+
+    /**
      * Getter
      *
      * @return the reservations
