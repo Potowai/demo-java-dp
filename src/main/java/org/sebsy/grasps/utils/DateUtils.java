@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 
 public final class DateUtils {
 
+    static {
+        LogToStdout.init();
+    }
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     private DateUtils() {
