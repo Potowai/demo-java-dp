@@ -7,7 +7,7 @@ import org.sebsy.grasps.beans.TypeReservation;
 import org.sebsy.grasps.daos.IClientDao;
 import org.sebsy.grasps.daos.ITypeReservationDao;
 import org.sebsy.grasps.services.IReservationService;
-import org.sebsy.grasps.services.ReservationService;
+import org.sebsy.grasps.services.impl.ReservationServiceImpl;
 
 import java.time.format.DateTimeParseException;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ public class ReservationControllerTest {
     private ReservationController buildController(Client client, TypeReservation type) {
         IClientDao clientDao = id -> client;
         ITypeReservationDao typeReservationDao = t -> type;
-        IReservationService service = new ReservationService(clientDao, typeReservationDao);
+        IReservationService service = new ReservationServiceImpl(clientDao, typeReservationDao);
         return new ReservationController(service);
     }
 
@@ -132,7 +132,7 @@ public class ReservationControllerTest {
         Client client = new Client("1", true);
         IClientDao clientDao = id -> client;
         ITypeReservationDao typeReservationDao = t -> TYPE_CINEMA;
-        IReservationService service = new ReservationService(clientDao, typeReservationDao);
+        IReservationService service = new ReservationServiceImpl(clientDao, typeReservationDao);
         ReservationController controller = new ReservationController(service);
 
         Params params = new Params();
@@ -160,7 +160,7 @@ public class ReservationControllerTest {
 
         IClientDao clientDao = id -> null;
         ITypeReservationDao typeDao = t -> TYPE_CINEMA;
-        IReservationService service = new ReservationService(clientDao, typeDao);
+        IReservationService service = new ReservationServiceImpl(clientDao, typeDao);
         ReservationController controller = new ReservationController(service);
 
         Params params = new Params();
@@ -178,7 +178,7 @@ public class ReservationControllerTest {
 
         IClientDao clientDao = id -> CLIENT_PREMIUM;
         ITypeReservationDao typeDao = t -> null;
-        IReservationService service = new ReservationService(clientDao, typeDao);
+        IReservationService service = new ReservationServiceImpl(clientDao, typeDao);
         ReservationController controller = new ReservationController(service);
 
         Params params = new Params();
@@ -196,7 +196,7 @@ public class ReservationControllerTest {
 
         IClientDao clientDao = id -> CLIENT_PREMIUM;
         ITypeReservationDao typeDao = t -> TYPE_CINEMA;
-        IReservationService service = new ReservationService(clientDao, typeDao);
+        IReservationService service = new ReservationServiceImpl(clientDao, typeDao);
         ReservationController controller = new ReservationController(service);
 
         Params params = new Params();

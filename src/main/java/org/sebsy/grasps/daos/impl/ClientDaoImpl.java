@@ -1,14 +1,14 @@
-package org.sebsy.grasps.daos;
+package org.sebsy.grasps.daos.impl;
 
 import org.sebsy.grasps.beans.Client;
+import org.sebsy.grasps.daos.IClientDao;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
-public class ClientDao implements IClientDao {
+public class ClientDaoImpl implements IClientDao {
 
-    private static final Logger LOG = Logger.getLogger(ClientDao.class.getName());
+    private static final Logger LOG = Logger.getLogger(ClientDaoImpl.class.getName());
 
     private static Client[] clients = {new Client("1", true), new Client("2", true), new Client("3", false)};
 

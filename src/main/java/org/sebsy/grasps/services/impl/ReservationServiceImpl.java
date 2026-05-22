@@ -1,4 +1,4 @@
-package org.sebsy.grasps.services;
+package org.sebsy.grasps.services.impl;
 
 import org.sebsy.grasps.Params;
 import org.sebsy.grasps.beans.Client;
@@ -6,19 +6,20 @@ import org.sebsy.grasps.beans.Reservation;
 import org.sebsy.grasps.beans.TypeReservation;
 import org.sebsy.grasps.daos.IClientDao;
 import org.sebsy.grasps.daos.ITypeReservationDao;
+import org.sebsy.grasps.services.IReservationService;
 import org.sebsy.grasps.utils.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
-public class ReservationService implements IReservationService {
+public class ReservationServiceImpl implements IReservationService {
 
-    private static final Logger LOG = Logger.getLogger(ReservationService.class.getName());
+    private static final Logger LOG = Logger.getLogger(ReservationServiceImpl.class.getName());
 
     private IClientDao clientDao;
     private ITypeReservationDao typeReservationDao;
 
-    public ReservationService(IClientDao clientDao, ITypeReservationDao typeReservationDao) {
+    public ReservationServiceImpl(IClientDao clientDao, ITypeReservationDao typeReservationDao) {
         this.clientDao = clientDao;
         this.typeReservationDao = typeReservationDao;
     }

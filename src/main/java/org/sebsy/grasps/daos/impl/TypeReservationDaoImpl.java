@@ -1,14 +1,14 @@
-package org.sebsy.grasps.daos;
+package org.sebsy.grasps.daos.impl;
 
 import org.sebsy.grasps.beans.TypeReservation;
+import org.sebsy.grasps.daos.ITypeReservationDao;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
-public class TypeReservationDao implements ITypeReservationDao {
+public class TypeReservationDaoImpl implements ITypeReservationDao {
 
-    private static final Logger LOG = Logger.getLogger(TypeReservationDao.class.getName());
+    private static final Logger LOG = Logger.getLogger(TypeReservationDaoImpl.class.getName());
 
     private static TypeReservation[] types = {new TypeReservation("TH", 150.0, 15.0), new TypeReservation("CI", 10.9, 0.0)};
 
