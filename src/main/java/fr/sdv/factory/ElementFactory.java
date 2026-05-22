@@ -1,19 +1,8 @@
 package fr.sdv.factory;
 
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 public class ElementFactory {
-
-    static {
-        Logger root = Logger.getLogger("");
-        root.setUseParentHandlers(false);
-        for (Handler h : root.getHandlers()) {
-            root.removeHandler(h);
-        }
-        StreamHandler handler = new StreamHandler(System.out, new SimpleFormatter());
-        handler.setLevel(Level.ALL);
-        root.addHandler(handler);
-    }
 
     private static final Logger LOG = Logger.getLogger(ElementFactory.class.getName());
 
