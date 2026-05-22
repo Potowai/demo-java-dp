@@ -1,6 +1,5 @@
 package org.sebsy.grasps;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.sebsy.grasps.beans.Client;
 import org.sebsy.grasps.beans.Reservation;
@@ -10,10 +9,14 @@ import org.sebsy.grasps.daos.ITypeReservationDao;
 import org.sebsy.grasps.services.IReservationService;
 import org.sebsy.grasps.services.ReservationService;
 
-import static org.junit.Assert.assertEquals;
+import java.time.format.DateTimeParseException;
+import java.util.logging.Logger;
 
-public class ReservationControllerTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class ReservationControllerTest {
+
+    private static final Logger LOG = Logger.getLogger(ReservationControllerTest.class.getName());
     private static final double DELTA = 0.0000001;
 
     private static final Client CLIENT_PREMIUM = new Client("1", true);
@@ -28,10 +31,15 @@ public class ReservationControllerTest extends TestCase {
         return new ReservationController(service);
     }
 
+    // =============================================
+    // CAS PASSANTS
+    // =============================================
+
     @Test
     public void testCreerReservationTheatrePremium() {
-        ReservationController controller = buildController(CLIENT_PREMIUM, TYPE_THEATRE);
+        LOG.info("── CAS PASSANT : Théâtre × Client premium (réduction 15%) ──");
 
+        ReservationController controller = buildController(CLIENT_PREMIUM, TYPE_THEATRE);
         Params params = new Params();
         params.setDateReservation("20/11/2020 19:55:00");
         params.setNbPlaces(3);
@@ -39,13 +47,17 @@ public class ReservationControllerTest extends TestCase {
         params.setTypeReservation("TH");
 
         Reservation reservation = controller.creerReservation(params);
-        assertEquals(382.5, reservation.getTotal(), DELTA);
+
+        double attendu = 150.0 * 3 * (1 - 15.0 / 100.0);
+        assertEquals(attendu, reservation.getTotal(), DELTA);
+        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationTheatreNonPremium() {
-        ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_THEATRE);
+        LOG.info("── CAS PASSANT : Théâtre × Client non premium (pas de réduction) ──");
 
+        ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_THEATRE);
         Params params = new Params();
         params.setDateReservation("20/11/2020 19:55:00");
         params.setNbPlaces(3);
@@ -53,13 +65,17 @@ public class ReservationControllerTest extends TestCase {
         params.setTypeReservation("TH");
 
         Reservation reservation = controller.creerReservation(params);
-        assertEquals(450.0, reservation.getTotal(), DELTA);
+
+        double attendu = 150.0 * 3;
+        assertEquals(attendu, reservation.getTotal(), DELTA);
+        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationCinemaPremium() {
-        ReservationController controller = buildController(CLIENT_PREMIUM, TYPE_CINEMA);
+        LOG.info("── CAS PASSANT : Cinéma × Client premium (réduction 0%) ──");
 
+        ReservationController controller = buildController(CLIENT_PREMIUM, TYPE_CINEMA);
         Params params = new Params();
         params.setDateReservation("21/11/2020 20:30:00");
         params.setNbPlaces(4);
@@ -67,13 +83,17 @@ public class ReservationControllerTest extends TestCase {
         params.setTypeReservation("CI");
 
         Reservation reservation = controller.creerReservation(params);
-        assertEquals(43.6, reservation.getTotal(), DELTA);
+
+        double attendu = 10.9 * 4;
+        assertEquals(attendu, reservation.getTotal(), DELTA);
+        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationCinemaNonPremium() {
-        ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_CINEMA);
+        LOG.info("── CAS PASSANT : Cinéma × Client non premium ──");
 
+        ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_CINEMA);
         Params params = new Params();
         params.setDateReservation("21/11/2020 20:30:00");
         params.setNbPlaces(4);
@@ -81,6 +101,110 @@ public class ReservationControllerTest extends TestCase {
         params.setTypeReservation("CI");
 
         Reservation reservation = controller.creerReservation(params);
-        assertEquals(43.6, reservation.getTotal(), DELTA);
+
+        double attendu = 10.9 * 4;
+        assertEquals(attendu, reservation.getTotal(), DELTA);
+        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
+    }
+
+    @Test
+    public void testCreerReservationNbPlacesZero() {
+        LOG.info("── CAS PASSANT : 0 place → total à 0 ──");
+
+        ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_THEATRE);
+        Params params = new Params();
+        params.setDateReservation("20/11/2020 19:55:00");
+        params.setNbPlaces(0);
+        params.setIdentifiantClient("3");
+        params.setTypeReservation("TH");
+
+        Reservation reservation = controller.creerReservation(params);
+
+        assertEquals(0.0, reservation.getTotal(), DELTA);
+        assertEquals(0, reservation.getNbPlaces());
+        LOG.info("✓ Total = " + reservation.getTotal() + " pour " + reservation.getNbPlaces() + " places");
+    }
+
+    @Test
+    public void testReservationAjouteeAuClient() {
+        LOG.info("── CAS PASSANT : la réservation est liée au client ──");
+
+        Client client = new Client("1", true);
+        IClientDao clientDao = id -> client;
+        ITypeReservationDao typeReservationDao = t -> TYPE_CINEMA;
+        IReservationService service = new ReservationService(clientDao, typeReservationDao);
+        ReservationController controller = new ReservationController(service);
+
+        Params params = new Params();
+        params.setDateReservation("21/11/2020 20:30:00");
+        params.setNbPlaces(2);
+        params.setIdentifiantClient("1");
+        params.setTypeReservation("CI");
+
+        Reservation reservation = controller.creerReservation(params);
+
+        assertNotNull("La réservation doit avoir un client", reservation.getClient());
+        assertEquals("1", reservation.getClient().getIdentifiantClient());
+        assertTrue("Le client doit avoir la réservation dans sa liste",
+                client.getReservations().contains(reservation));
+        LOG.info("✓ Réservation liée au client " + reservation.getClient().getIdentifiantClient());
+    }
+
+    // =============================================
+    // CAS NON PASSANTS
+    // =============================================
+
+    @Test(expected = NullPointerException.class)
+    public void testClientInexistant() {
+        LOG.info("── CAS NON PASSANT : client inexistant → NullPointerException ──");
+
+        IClientDao clientDao = id -> null;
+        ITypeReservationDao typeDao = t -> TYPE_CINEMA;
+        IReservationService service = new ReservationService(clientDao, typeDao);
+        ReservationController controller = new ReservationController(service);
+
+        Params params = new Params();
+        params.setDateReservation("21/11/2020 20:30:00");
+        params.setNbPlaces(2);
+        params.setIdentifiantClient("INCONNU");
+        params.setTypeReservation("CI");
+
+        controller.creerReservation(params);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testTypeInexistant() {
+        LOG.info("── CAS NON PASSANT : type réservation inexistant → NullPointerException ──");
+
+        IClientDao clientDao = id -> CLIENT_PREMIUM;
+        ITypeReservationDao typeDao = t -> null;
+        IReservationService service = new ReservationService(clientDao, typeDao);
+        ReservationController controller = new ReservationController(service);
+
+        Params params = new Params();
+        params.setDateReservation("21/11/2020 20:30:00");
+        params.setNbPlaces(2);
+        params.setIdentifiantClient("1");
+        params.setTypeReservation("XX");
+
+        controller.creerReservation(params);
+    }
+
+    @Test(expected = DateTimeParseException.class)
+    public void testDateInvalide() {
+        LOG.info("── CAS NON PASSANT : format de date invalide → DateTimeParseException ──");
+
+        IClientDao clientDao = id -> CLIENT_PREMIUM;
+        ITypeReservationDao typeDao = t -> TYPE_CINEMA;
+        IReservationService service = new ReservationService(clientDao, typeDao);
+        ReservationController controller = new ReservationController(service);
+
+        Params params = new Params();
+        params.setDateReservation("2020-11-20 19:55");
+        params.setNbPlaces(2);
+        params.setIdentifiantClient("1");
+        params.setTypeReservation("CI");
+
+        controller.creerReservation(params);
     }
 }

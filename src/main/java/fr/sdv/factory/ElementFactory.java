@@ -3,6 +3,9 @@ package fr.sdv.factory;
 public class ElementFactory {
 
     public static Element create(TypeElement type, String nom, double valeur, String unite) {
+        if (type == null) {
+            throw new IllegalArgumentException("Le type d'élément est obligatoire");
+        }
         switch (type) {
             case INGREDIENT:
                 return new Ingredient(nom, valeur, unite);
