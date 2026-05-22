@@ -1,17 +1,17 @@
 package fr.sdv.factory;
 
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class ElementFactory {
 
     static {
-        java.util.logging.Logger root = java.util.logging.Logger.getLogger("");
+        Logger root = Logger.getLogger("");
         root.setUseParentHandlers(false);
-        for (java.util.logging.Handler h : root.getHandlers()) {
+        for (Handler h : root.getHandlers()) {
             root.removeHandler(h);
         }
-        java.util.logging.StreamHandler handler = new java.util.logging.StreamHandler(System.out, new java.util.logging.SimpleFormatter());
-        handler.setLevel(java.util.logging.Level.ALL);
+        StreamHandler handler = new StreamHandler(System.out, new SimpleFormatter());
+        handler.setLevel(Level.ALL);
         root.addHandler(handler);
     }
 

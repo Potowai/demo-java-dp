@@ -30,15 +30,37 @@ public class ReservationService implements IReservationService {
                 + ", type=" + params.getTypeReservation()
                 + ", places=" + params.getNbPlaces());
 
-        LocalDateTime dateReservation = DateUtils.toDate(params.getDateReservation());
-        LOG.info("Date convertie : " + dateReservation);
+        try {
+            LocalDateTime dateReservation = DateUtils.toDate(params.getDateReservation());
+            LOG.info("Date convertie : " + dateReservation);
 
-        Client client = clientDao.extraireClient(params.getIdentifiantClient());
-        LOG.info("Client trouve : " + (client != null ? client.getIdentifiantClient() : "null"));
+            Client client = clientDao.extraireClient(params.getIdentifiantClient());
+            LOG.info("Client trouve : " + (client != null ? client.getIdentifiantClient() : "null"));
+            if (client == null) {
+                NullPointerException e = new NullPointerException("Client introuvable : " + params.getIdentifiantClient());
+                LOG.severe("Erreur : " + e.getMessage());
+                throw e;
+            }
 
-        TypeReservation type = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
-        LOG.info("Type reservation trouve : " + (type != null ? type.getType() : "null"));
+            TypeReservation type = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
+            LOG.info("Type reservation trouve : " + (type != null ? type.getType() : "null"));
+            if (type == null) {
+                NullPointerException e = new NullPointerException("Type de reservation introuvable : " + params.getTypeReservation());
+                LOG.severe("Erreur : " + e.getMessage());
+                throw e;
+            }
 
-        return client.creerReservation(dateReservation, params.getNbPlaces(), type);
+            return client.creerReservation(dateReservation, params.getNbPlaces(), type);
+
+        } catch (java.time.format.DateTimeParseException e) {
+            LOG.severe("Erreur format date : '" + params.getDateReservation() + "' - " + e.getMessage());
+            throw e;
+        } catch (NullPointerException e) {
+            LOG.severe("Erreur donnees manquantes : " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            LOG.severe("Erreur inattendue : " + e.getMessage());
+            throw e;
+        }
     }
 }
