@@ -9,8 +9,11 @@ import org.sebsy.grasps.daos.ITypeReservationDao;
 import org.sebsy.grasps.utils.DateUtils;
 
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 public class ReservationService implements IReservationService {
+
+    private static final Logger LOG = Logger.getLogger(ReservationService.class.getName());
 
     private IClientDao clientDao;
     private ITypeReservationDao typeReservationDao;
@@ -22,9 +25,20 @@ public class ReservationService implements IReservationService {
 
     @Override
     public Reservation creerReservation(Params params) {
+        LOG.info("Réception demande réservation : client=" + params.getIdentifiantClient()
+                + ", date=" + params.getDateReservation()
+                + ", type=" + params.getTypeReservation()
+                + ", places=" + params.getNbPlaces());
+
         LocalDateTime dateReservation = DateUtils.toDate(params.getDateReservation());
+        LOG.info("Date convertie : " + dateReservation);
+
         Client client = clientDao.extraireClient(params.getIdentifiantClient());
+        LOG.info("Client trouvé : " + (client != null ? client.getIdentifiantClient() : "null"));
+
         TypeReservation type = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
+        LOG.info("Type réservation trouvé : " + (type != null ? type.getType() : "null"));
+
         return client.creerReservation(dateReservation, params.getNbPlaces(), type);
     }
 }

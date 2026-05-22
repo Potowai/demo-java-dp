@@ -6,9 +6,12 @@ import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Entity
 public class Client {
+
+    private static final Logger LOG = Logger.getLogger(Client.class.getName());
 
     @Id
     private String identifiantClient;
@@ -70,9 +73,13 @@ public class Client {
     }
 
     public Reservation creerReservation(LocalDateTime date, int nbPlaces, TypeReservation type) {
+        LOG.info("Création réservation : client=" + identifiantClient
+                + ", date=" + date + ", places=" + nbPlaces
+                + ", type=" + type.getType());
         Reservation reservation = new Reservation(date, nbPlaces);
         this.addReservation(reservation);
         reservation.calculerTotal(type);
+        LOG.info("Réservation créée : total=" + reservation.getTotal());
         return reservation;
     }
 

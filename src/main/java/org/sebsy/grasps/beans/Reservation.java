@@ -5,9 +5,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 @Entity
 public class Reservation {
+
+    private static final Logger LOG = Logger.getLogger(Reservation.class.getName());
 
     @Id
     private Long id;
@@ -112,8 +115,11 @@ public class Reservation {
         double totalBase = typeReservation.getMontant() * nbPlaces;
         if (client.isPremium()) {
             this.total = totalBase * (1 - typeReservation.getReductionPourcent() / 100.0);
+            LOG.info("Calcul total : " + totalBase + " - réduction " + typeReservation.getReductionPourcent()
+                    + "% (client premium) = " + this.total);
         } else {
             this.total = totalBase;
+            LOG.info("Calcul total : " + totalBase + " (client non premium, pas de réduction)");
         }
     }
 }

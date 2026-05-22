@@ -3,3 +3,6 @@
 *.class
 /.settings
 /target
+.idea/
+.vscode/
+*.iml

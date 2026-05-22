@@ -1,6 +1,10 @@
 package fr.sdv.builder;
 
+import java.util.logging.Logger;
+
 public class ProduitBuilder {
+
+    private static final Logger LOG = Logger.getLogger(ProduitBuilder.class.getName());
 
     private String nom;
     private double prix;
@@ -26,11 +30,17 @@ public class ProduitBuilder {
 
     public Produit build() {
         if (nom == null || nom.isBlank()) {
+            LOG.severe("Échec build : nom obligatoire");
             throw new IllegalStateException("Le nom est obligatoire");
         }
         if (categorie == null) {
+            LOG.severe("Échec build : catégorie obligatoire");
             throw new IllegalStateException("La catégorie est obligatoire");
         }
-        return new Produit(nom, prix, categorie);
+        Produit produit = new Produit(nom, prix, categorie);
+        LOG.info("Produit construit : " + produit.getNom()
+                + ", prix=" + produit.getPrix()
+                + ", catégorie=" + produit.getCategorie());
+        return produit;
     }
 }
