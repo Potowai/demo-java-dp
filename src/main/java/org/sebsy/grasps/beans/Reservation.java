@@ -115,11 +115,11 @@ public class Reservation {
         double totalBase = typeReservation.getMontant() * nbPlaces;
         if (client.isPremium()) {
             this.total = totalBase * (1 - typeReservation.getReductionPourcent() / 100.0);
-            LOG.info("Calcul total : " + totalBase + " - réduction " + typeReservation.getReductionPourcent()
+            LOG.info("Calcul total : " + totalBase + " - reduction " + typeReservation.getReductionPourcent()
                     + "% (client premium) = " + this.total);
         } else {
             this.total = totalBase;
-            LOG.info("Calcul total : " + totalBase + " (client non premium, pas de réduction)");
+            LOG.info("Calcul total : " + totalBase + " (client non premium, pas de reduction)");
         }
     }
 }

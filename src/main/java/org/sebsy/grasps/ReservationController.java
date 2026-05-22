@@ -16,9 +16,9 @@ public class ReservationController {
     }
 
     public Reservation creerReservation(Params params) {
-        LOG.info("ReservationController.creerReservation appelé");
+        LOG.info("ReservationController.creerReservation appele");
         Reservation reservation = reservationService.creerReservation(params);
-        LOG.info("Réservation retournée : total=" + reservation.getTotal());
+        LOG.info("Reservation retournee : total=" + reservation.getTotal());
         return reservation;
     }
 }

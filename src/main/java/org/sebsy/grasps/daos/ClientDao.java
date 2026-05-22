@@ -19,7 +19,7 @@ public class ClientDao implements IClientDao {
                 .filter(c -> c.getIdentifiantClient().equals(id))
                 .findAny()
                 .orElse(null);
-        LOG.info("Résultat client : " + (client != null ? client.getIdentifiantClient() + " premium=" + client.isPremium() : "null"));
+        LOG.info("Resultat client : " + (client != null ? client.getIdentifiantClient() + " premium=" + client.isPremium() : "null"));
         return client;
     }
 

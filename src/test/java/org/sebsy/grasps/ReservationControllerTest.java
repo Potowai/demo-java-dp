@@ -37,7 +37,7 @@ public class ReservationControllerTest {
 
     @Test
     public void testCreerReservationTheatrePremium() {
-        LOG.info("── CAS PASSANT : Théâtre × Client premium (réduction 15%) ──");
+        LOG.info("-- CAS PASSANT : Theatre x Client premium (reduction 15%) --");
 
         ReservationController controller = buildController(CLIENT_PREMIUM, TYPE_THEATRE);
         Params params = new Params();
@@ -50,12 +50,12 @@ public class ReservationControllerTest {
 
         double attendu = 150.0 * 3 * (1 - 15.0 / 100.0);
         assertEquals(attendu, reservation.getTotal(), DELTA);
-        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
+        LOG.info("OK Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationTheatreNonPremium() {
-        LOG.info("── CAS PASSANT : Théâtre × Client non premium (pas de réduction) ──");
+        LOG.info("-- CAS PASSANT : Theatre x Client non premium (pas de reduction) --");
 
         ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_THEATRE);
         Params params = new Params();
@@ -68,12 +68,12 @@ public class ReservationControllerTest {
 
         double attendu = 150.0 * 3;
         assertEquals(attendu, reservation.getTotal(), DELTA);
-        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
+        LOG.info("OK Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationCinemaPremium() {
-        LOG.info("── CAS PASSANT : Cinéma × Client premium (réduction 0%) ──");
+        LOG.info("-- CAS PASSANT : Cinema x Client premium (reduction 0%) --");
 
         ReservationController controller = buildController(CLIENT_PREMIUM, TYPE_CINEMA);
         Params params = new Params();
@@ -86,12 +86,12 @@ public class ReservationControllerTest {
 
         double attendu = 10.9 * 4;
         assertEquals(attendu, reservation.getTotal(), DELTA);
-        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
+        LOG.info("OK Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationCinemaNonPremium() {
-        LOG.info("── CAS PASSANT : Cinéma × Client non premium ──");
+        LOG.info("-- CAS PASSANT : Cinema x Client non premium --");
 
         ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_CINEMA);
         Params params = new Params();
@@ -104,12 +104,12 @@ public class ReservationControllerTest {
 
         double attendu = 10.9 * 4;
         assertEquals(attendu, reservation.getTotal(), DELTA);
-        LOG.info("✓ Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
+        LOG.info("OK Total = " + reservation.getTotal() + " (attendu " + attendu + ")");
     }
 
     @Test
     public void testCreerReservationNbPlacesZero() {
-        LOG.info("── CAS PASSANT : 0 place → total à 0 ──");
+        LOG.info("-- CAS PASSANT : 0 place -> total a 0 --");
 
         ReservationController controller = buildController(CLIENT_NON_PREMIUM, TYPE_THEATRE);
         Params params = new Params();
@@ -122,12 +122,12 @@ public class ReservationControllerTest {
 
         assertEquals(0.0, reservation.getTotal(), DELTA);
         assertEquals(0, reservation.getNbPlaces());
-        LOG.info("✓ Total = " + reservation.getTotal() + " pour " + reservation.getNbPlaces() + " places");
+        LOG.info("OK Total = " + reservation.getTotal() + " pour " + reservation.getNbPlaces() + " places");
     }
 
     @Test
     public void testReservationAjouteeAuClient() {
-        LOG.info("── CAS PASSANT : la réservation est liée au client ──");
+        LOG.info("-- CAS PASSANT : la reservation est liee au client --");
 
         Client client = new Client("1", true);
         IClientDao clientDao = id -> client;
@@ -143,11 +143,11 @@ public class ReservationControllerTest {
 
         Reservation reservation = controller.creerReservation(params);
 
-        assertNotNull("La réservation doit avoir un client", reservation.getClient());
+        assertNotNull("La reservation doit avoir un client", reservation.getClient());
         assertEquals("1", reservation.getClient().getIdentifiantClient());
-        assertTrue("Le client doit avoir la réservation dans sa liste",
+        assertTrue("Le client doit avoir la reservation dans sa liste",
                 client.getReservations().contains(reservation));
-        LOG.info("✓ Réservation liée au client " + reservation.getClient().getIdentifiantClient());
+        LOG.info("OK Reservation liee au client " + reservation.getClient().getIdentifiantClient());
     }
 
     // =============================================
@@ -156,7 +156,7 @@ public class ReservationControllerTest {
 
     @Test(expected = NullPointerException.class)
     public void testClientInexistant() {
-        LOG.info("── CAS NON PASSANT : client inexistant → NullPointerException ──");
+        LOG.info("-- CAS NON PASSANT : client inexistant -> NullPointerException --");
 
         IClientDao clientDao = id -> null;
         ITypeReservationDao typeDao = t -> TYPE_CINEMA;
@@ -174,7 +174,7 @@ public class ReservationControllerTest {
 
     @Test(expected = NullPointerException.class)
     public void testTypeInexistant() {
-        LOG.info("── CAS NON PASSANT : type réservation inexistant → NullPointerException ──");
+        LOG.info("-- CAS NON PASSANT : type reservation inexistant -> NullPointerException --");
 
         IClientDao clientDao = id -> CLIENT_PREMIUM;
         ITypeReservationDao typeDao = t -> null;
@@ -192,7 +192,7 @@ public class ReservationControllerTest {
 
     @Test(expected = DateTimeParseException.class)
     public void testDateInvalide() {
-        LOG.info("── CAS NON PASSANT : format de date invalide → DateTimeParseException ──");
+        LOG.info("-- CAS NON PASSANT : format de date invalide -> DateTimeParseException --");
 
         IClientDao clientDao = id -> CLIENT_PREMIUM;
         ITypeReservationDao typeDao = t -> TYPE_CINEMA;

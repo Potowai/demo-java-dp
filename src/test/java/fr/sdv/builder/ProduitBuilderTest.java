@@ -15,7 +15,7 @@ public class ProduitBuilderTest {
 
     @Test
     public void testBuilderNominal() {
-        LOG.info("── CAS PASSANT : construction nominale d'un produit ──");
+        LOG.info("-- CAS PASSANT : construction nominale d'un produit --");
 
         Produit produit = new ProduitBuilder()
                 .setNom("Pomme")
@@ -27,14 +27,14 @@ public class ProduitBuilderTest {
         assertEquals(1.5, produit.getPrix(), 0.0001);
         assertEquals(Categorie.ALIMENTAIRE, produit.getCategorie());
 
-        LOG.info("✓ Produit créé : nom='" + produit.getNom()
+        LOG.info("OK Produit cree : nom='" + produit.getNom()
                 + "', prix=" + produit.getPrix()
-                + ", catégorie=" + produit.getCategorie());
+                + ", categorie=" + produit.getCategorie());
     }
 
     @Test
     public void testBuilderFluent() {
-        LOG.info("── CAS PASSANT : chaînage fluent dans un ordre différent ──");
+        LOG.info("-- CAS PASSANT : chainage fluent dans un ordre different --");
 
         Produit produit = new ProduitBuilder()
                 .setNom("Chemise")
@@ -46,22 +46,22 @@ public class ProduitBuilderTest {
         assertEquals(Categorie.VETEMENT, produit.getCategorie());
         assertEquals(29.99, produit.getPrix(), 0.0001);
 
-        LOG.info("✓ Chaînage fonctionne quel que soit l'ordre des setters");
+        LOG.info("OK Chainage fonctionne quel que soit l'ordre des setters");
     }
 
     @Test
     public void testBuilderPrixZero() {
-        LOG.info("── CAS PASSANT : prix à 0 (valeur limite) ──");
+        LOG.info("-- CAS PASSANT : prix a 0 (valeur limite) --");
 
         Produit produit = new ProduitBuilder()
-                .setNom("Échantillon gratuit")
+                .setNom("Echantillon gratuit")
                 .setPrix(0.0)
                 .setCategorie(Categorie.LOISIR)
                 .build();
 
         assertEquals(0.0, produit.getPrix(), 0.0001);
 
-        LOG.info("✓ Prix à 0 accepté : " + produit.getPrix());
+        LOG.info("OK Prix a 0 accepte : " + produit.getPrix());
     }
 
     // =============================================
@@ -70,18 +70,16 @@ public class ProduitBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testBuilderPrixNegatif() {
-        LOG.info("── CAS NON PASSANT : prix négatif → IllegalArgumentException ──");
+        LOG.info("-- CAS NON PASSANT : prix negatif -> IllegalArgumentException --");
 
         new ProduitBuilder()
                 .setNom("Test")
                 .setPrix(-5.0);
-
-        LOG.info("✓ Exception levée comme attendue");
     }
 
     @Test(expected = IllegalStateException.class)
     public void testBuilderNomObligatoire() {
-        LOG.info("── CAS NON PASSANT : nom null → IllegalStateException ──");
+        LOG.info("-- CAS NON PASSANT : nom null -> IllegalStateException --");
 
         new ProduitBuilder()
                 .setPrix(2.0)
@@ -91,7 +89,7 @@ public class ProduitBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void testBuilderNomVide() {
-        LOG.info("── CAS NON PASSANT : nom vide (blank) → IllegalStateException ──");
+        LOG.info("-- CAS NON PASSANT : nom vide (blank) -> IllegalStateException --");
 
         new ProduitBuilder()
                 .setNom("   ")
@@ -102,7 +100,7 @@ public class ProduitBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void testBuilderCategorieObligatoire() {
-        LOG.info("── CAS NON PASSANT : catégorie null → IllegalStateException ──");
+        LOG.info("-- CAS NON PASSANT : categorie null -> IllegalStateException --");
 
         new ProduitBuilder()
                 .setNom("Test")
@@ -112,7 +110,7 @@ public class ProduitBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void testBuilderRienConfigure() {
-        LOG.info("── CAS NON PASSANT : aucun setter appelé → IllegalStateException ──");
+        LOG.info("-- CAS NON PASSANT : aucun setter appele -> IllegalStateException --");
 
         new ProduitBuilder().build();
     }

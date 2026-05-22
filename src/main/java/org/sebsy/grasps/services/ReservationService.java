@@ -25,7 +25,7 @@ public class ReservationService implements IReservationService {
 
     @Override
     public Reservation creerReservation(Params params) {
-        LOG.info("Réception demande réservation : client=" + params.getIdentifiantClient()
+        LOG.info("Reception demande reservation : client=" + params.getIdentifiantClient()
                 + ", date=" + params.getDateReservation()
                 + ", type=" + params.getTypeReservation()
                 + ", places=" + params.getNbPlaces());
@@ -34,10 +34,10 @@ public class ReservationService implements IReservationService {
         LOG.info("Date convertie : " + dateReservation);
 
         Client client = clientDao.extraireClient(params.getIdentifiantClient());
-        LOG.info("Client trouvé : " + (client != null ? client.getIdentifiantClient() : "null"));
+        LOG.info("Client trouve : " + (client != null ? client.getIdentifiantClient() : "null"));
 
         TypeReservation type = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
-        LOG.info("Type réservation trouvé : " + (type != null ? type.getType() : "null"));
+        LOG.info("Type reservation trouve : " + (type != null ? type.getType() : "null"));
 
         return client.creerReservation(dateReservation, params.getNbPlaces(), type);
     }

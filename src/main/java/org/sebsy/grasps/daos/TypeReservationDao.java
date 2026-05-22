@@ -14,12 +14,12 @@ public class TypeReservationDao implements ITypeReservationDao {
 
     @Override
     public TypeReservation extraireTypeReservation(String type) {
-        LOG.info("Recherche type réservation par code=" + type);
+        LOG.info("Recherche type reservation par code=" + type);
         TypeReservation result = List.of(types).stream()
                 .filter(t -> t.getType().equals(type))
                 .findAny()
                 .orElse(null);
-        LOG.info("Résultat type : " + (result != null ? result.getType() + " montant=" + result.getMontant() + " réduction=" + result.getReductionPourcent() : "null"));
+        LOG.info("Resultat type : " + (result != null ? result.getType() + " montant=" + result.getMontant() + " reduction=" + result.getReductionPourcent() : "null"));
         return result;
     }
 }

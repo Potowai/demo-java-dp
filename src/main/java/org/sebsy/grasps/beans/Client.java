@@ -73,13 +73,13 @@ public class Client {
     }
 
     public Reservation creerReservation(LocalDateTime date, int nbPlaces, TypeReservation type) {
-        LOG.info("Création réservation : client=" + identifiantClient
+        LOG.info("Creation reservation : client=" + identifiantClient
                 + ", date=" + date + ", places=" + nbPlaces
                 + ", type=" + type.getType());
         Reservation reservation = new Reservation(date, nbPlaces);
         this.addReservation(reservation);
         reservation.calculerTotal(type);
-        LOG.info("Réservation créée : total=" + reservation.getTotal());
+        LOG.info("Reservation creee : total=" + reservation.getTotal());
         return reservation;
     }
 

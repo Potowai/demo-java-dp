@@ -30,17 +30,17 @@ public class ProduitBuilder {
 
     public Produit build() {
         if (nom == null || nom.isBlank()) {
-            LOG.severe("Échec build : nom obligatoire");
+            LOG.severe("Echec build : nom obligatoire");
             throw new IllegalStateException("Le nom est obligatoire");
         }
         if (categorie == null) {
-            LOG.severe("Échec build : catégorie obligatoire");
+            LOG.severe("Echec build : categorie obligatoire");
             throw new IllegalStateException("La catégorie est obligatoire");
         }
         Produit produit = new Produit(nom, prix, categorie);
         LOG.info("Produit construit : " + produit.getNom()
                 + ", prix=" + produit.getPrix()
-                + ", catégorie=" + produit.getCategorie());
+                + ", categorie=" + produit.getCategorie());
         return produit;
     }
 }
